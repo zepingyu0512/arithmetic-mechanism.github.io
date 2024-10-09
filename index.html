@@ -307,14 +307,14 @@
           We show how we find the four stages in arithmetic tasks. More experiments and analysis can be found in the paper.
           </p>
           <p>  
-          Step 1: find arithmetic head using causal-based method. We conduct experiments on 1-digit, 2-digit and 3-digit
+          <b>Step 1: find arithmetic head using causal-based method.</b> We conduct experiments on 1-digit, 2-digit and 3-digit
           arithmetic operations, and find that zero interventions on only a few heads can cause very much decrease. 
           For example, when intervening the arithmetic head 17-22 (the 22th head on layer 17), the 2-digit addition 
           accuracy drops from 96.8 to 42.9%. The 1-digit addition accuracy drops from 88.9% to 47.6%. Therefore, 
           head 17-22 stores the 1-digit addition memorization.
           </p>
           <p>  
-          Step 2: find deep FFN neurons using comparable neuron analysis (CNA) method. The core idea of our proposed
+          <b>Step 2: find deep FFN neurons using comparable neuron analysis (CNA) method.</b> The core idea of our proposed
           comparable neuron analysis method is to compare the change of the same neuron's importance scores between the 
           original model and the intervened model (replacing head 17-22 parameters with zero). If a neuron is affected much,
           its importance score should reduce much. Specifically, the importance score is log probability increase in unembedding
@@ -323,13 +323,13 @@
           "feature predicting" role by activating the identified deep FFN neurons.
           </p>
           <p>  
-          Step 3: prediction enhancing stage among deep FFN neurons. Among the identified top100 deep FFN neurons, we find that the
+          <b>Step 3: prediction enhancing stage among deep FFN neurons.</b> Among the identified top100 deep FFN neurons, we find that the
           lower FFN neurons can activate the upper FFN neurons. When zero-intervening the lowest neuron among the top100 neurons,
           the sum of all the neurons' coefficient score decrease much. Therefore, there is a prediction enhancing stage among deep 
           FFN neurons.
           </p>
           <p>    
-          Step 4: feature enhancing stage with shallow FFN neurons. It is hard to locate the important shallow FFN neurons,
+          <b>Step 4: feature enhancing stage with shallow FFN neurons.</b> It is hard to locate the important shallow FFN neurons,
           because they usually don't contain the information related to the final predictions directly. We analyze the important
           shallow FFN neurons in case "3+5=" -> "8" by computing the inner product between the shallow neurons and the 
           important deep neurons. We find that the important shallow neurons are hidden-interpretable. When directly projecting
@@ -342,14 +342,14 @@
           decrease on all one-digit cases. The accuracy drops much. This can prove that the hidden-interpretable neurons are important.
           </p>
           <p> 
-          Constucting the internal logic chain of "3+5=" -> "8". First, in shallow layers there is a feature enhancing stage, 
+          <b>Constucting the internal logic chain of "3+5=" -> "8".</b> First, in shallow layers there is a feature enhancing stage, 
           the hidden-interpretable shallow FFN neurons related to the input tokens are activated. Then these enhanced features 
           are transformed into the last position. The arithmetic head takes all these enhanced features as input and activate the
           deep FFN neurons related to the final prediction eight. Among the deep neurons, the lower neurons activate the upper 
           neurons during the prediction enhancing stage.
           </p>
           <p> 
-          Top tokens of identified hidden-interpretable shallow FFN neurons:
+          <b>Top tokens of identified hidden-interpretable shallow FFN neurons:</b>
           </p>
           <p>
           12_4072 (not transformed): [rd, quarters, PO, Constraint, ran, avas]
@@ -364,7 +364,7 @@
           11_2258 (attention transformed): [XV, fifth, Fif, avas, Five, five, abase, fif]
           </p>
           <p> 
-          Top tokens of identified shallow FFN neurons using comparable neuron analysis (CNA):
+          <b>Top tokens of identified shallow FFN neurons using comparable neuron analysis (CNA):</b>
           </p>
           <p>
           28_3696: [8, eight, VIII, huit, acht, otto]
@@ -391,7 +391,7 @@
         <h2 class="title is-3">Applications</h2>
         <div class="content has-text-justified">
           <p>
-          a) Understand the mechanism of LoRA. 
+          <b>a) Understand the mechanism of LoRA.</b>
           </p>
           <p>
           We apply the comparable neuron analysis method to explore the mechanism 
@@ -401,7 +401,7 @@
           the features, rather than learning the features in the LoRA parameters.
           </p>
           <p>
-          b) <b>Model pruning for arithmetic tasks.</b>
+          <b>b) Model pruning for arithmetic tasks.</b>
           </p>
           <p>
           In previous analysis, we find that the accuracy is not affected much when 
@@ -412,7 +412,7 @@
           When randomly prune the same neurons and add LoRA on this randomly-pruned model, the accuracy is only 17.1%.
           </p>
           <p>
-          c) Model editing for reducing gender bias.
+          <b>c) Model editing for reducing gender bias.</b>
           </p>
           <p>
           We compare the neuron’s importance score under different input cases 
