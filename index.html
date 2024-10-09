@@ -234,7 +234,7 @@
           We construct the internal logic chain by identifying four distinct stages that span from inputs to prediction, 
           as depicted in Figure 1. During the <b>feature enhancing stage</b>, <b>hidden-interpretable features</b> are extracted from 
           shallow FFN neurons. Subsequently, in the <b>feature transferring stage</b>, shallow attention layers convert these 
-          features into directly interpretable features and then transfer them to the last position. In the <b>feature 
+          features into <b>directly interpretable features</b> and then transfer them to the last position. In the <b>feature 
           predicting stage</b>, the arithmetic heads play critical roles, activating deep FFN neurons related to the final 
           prediction. Finally, a <b>prediction enhancing stage</b> exists among deep FFN neurons. Lower FFN neurons activate upper
           FFN neurons, while both of them enhance the probability of the final prediction.
@@ -270,7 +270,7 @@
         <h2 class="title is-3">Contributions</h2>
         <div class="content has-text-justified">
           <p>
-          To summarize, our contributions are as follows. 
+          <b>To summarize, our contributions are as follows.</b>
           </p> 
           <p>
           <b>a) We find the reason why only a few heads can influence 
