@@ -214,20 +214,48 @@ apply our method in model pruning for arithmetic tasks and model editing for red
         <h2 class="title is-3">Introduction</h2>
         <div class="content has-text-justified">
           <p>
-
+          Arithmetic ability is a crucial foundational skill of large language models, which is related to reasoning ability.
+          Previous studies (Stolfo et al., 2023) explored the layer-level information flow in arithmetic tasks. 
+          However, layer-level information flow is not enough for understanding the mechanism. Many studies have found that
+          the attention heads and FFN neurons are the fundamental units for storing different abilities and different knowledge.
+          Furthermore, as model editing typically occurs at the neuron level, it remains unclear how to effectively leverage 
+          the explanations due to the uncertainty surrounding the precise locations of important parameters.
           </p>
           <p>
-
+          In this study, we take attention heads and FFN neurons as fundamental units, and explore the exact parameters store
+          the arithmetic ability for different operations. We observe that only a minority of heads play significant roles in 
+          arithmetic tasks, which we refer to as "arithmetic heads". Through experiments involving 1-digit to 3-digit 
+          operations, we find critical memorization of 1-digit operations is lost when these heads are intervened.
           </p>
           <p>
-
+          To explore the underlying mechanisms of this phenomenon, we propose the Comparative Neuron Analysis (CNA) method,
+          which compares the change of neurons between the original model and the intervened model for the same case. 
+          We construct the internal logic chain by identifying four distinct stages that span from inputs to prediction, 
+          as depicted in Figure 1. During the feature enhancing stage, hidden-interpretable features are extracted from 
+          shallow FFN neurons. Subsequently, in the feature transferring stage, shallow attention layers convert these 
+          features into directlyinterpretable features and then transfer them to the last position. In the feature 
+          predicting stage, the arithmetic heads play critical roles, activating deep FFN neurons related to the final 
+          prediction. Finally, a prediction enhancing stage exists among deep FFN neurons. Lower FFN neurons activate upper
+          FFN neurons, while both of them enhance the probability of the final prediction.
           </p>
           <p>
-
+          Based on this analysis, we investigate the mechanism of LoRA. Employing our CNA method to compare the original 
+          model with the fine-tuned LoRA model, we note a significant increase in the coefficient scores of crucial deep 
+          FFN neurons. Hence, we conclude that LoRA enhances the final prediction by amplifying the coefficient scores of 
+          important FFN neurons. Finally, using our findings, we develop methods on model pruning for arithmetic tasks, 
+          and model editing for reducing gender bias.
           </p>
+          <p>
+          To summarize, our contributions are as follows. a) We find the reason why only a few heads can influence 
+          arithmetic ability is that these heads store crucial parameters for memorizing 1D operations. We identify 
+          human-interpretable FFN neurons across both shallow and deep layers. b) We propose the CNA method and construct
+          the internal logic chain from inputs to prediction with four stages: feature enhancing, feature transferring, 
+          feature predicting, prediction enhancing. c) We use the CNA method to explore the mechanism of LoRA and find 
+          LoRA increases the probability of final predictions by amplifying the important FFN neurons’ coefficient scores. 
+          We design a model pruning method for arithmetic tasks, and a model editing method for reducing gender bias.
         </div>
         <div class="column is-centered has-text-centered">
-          <img src="./static/images/neuron-mechanism.jpg"
+          <img src="./static/images/arithmetic.jpg"
                class="interpolation-image"
                alt="Interpolate start reference image."/>
           <p>Neuron-Level Information Flow</p>
@@ -244,28 +272,70 @@ apply our method in model pruning for arithmetic tasks and model editing for red
     <!-- Mechanistic interpretability evidence -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3">Mechanistic interpretability of identified neurons</h2>
+        <h2 class="title is-3">Four stages of arithmetic tasks</h2>
         <div class="content has-text-justified">
           <p>
-
+          We show how we find the four stages in arithmetic tasks. More experiments and analysis can be found in the paper.
           </p>
           <p>  
-
+          Step 1: find arithmetic head using causal-based method. We conduct experiments on 1-digit, 2-digit and 3-digit
+          arithmetic operations, and find that zero interventions on only a few heads can cause very much decrease. 
+          For example, when intervening the arithmetic head 17-22 (the 22th head on layer 17), the 2-digit addition 
+          accuracy drops from 96.8 to 42.9%. The 1-digit addition accuracy drops from 88.9% to 47.6%. Therefore, 
+          head 17-22 stores the 1-digit addition memorization.
           </p>
           <p>  
-
+          Step 2: find deep FFN neurons using comparable neuron analysis (CNA) method. The core idea of our proposed
+          comparable neuron analysis method is to compare the change of the same neuron's importance scores between the 
+          original model and the intervened model (replacing head 17-22 parameters with zero). If a neuron is affected much,
+          its importance score should reduce much. Specifically, the importance score is log probability increase in unembedding
+          space. When intervening top100 identified neurons, the accuracy drops 100%. When keeping these top100 neurons and
+          intervening all the other neurons in deep layers, the accuracy only drops 3.9%. Therefore, arithmetic head plays the
+          "feature predicting" role by activating the identified deep FFN neurons.
           </p>
           <p>  
-
+          Step 3: prediction enhancing stage among deep FFN neurons. Among the identified top100 deep FFN neurons, we find that the
+          lower FFN neurons can activate the upper FFN neurons. When zero-intervening the lowest neuron among the top100 neurons,
+          the sum of all the neurons' coefficient score decrease much. Therefore, there is a prediction enhancing stage among deep 
+          FFN neurons.
           </p>
           <p>    
-
+          Step 4: feature enhancing stage with shallow FFN neurons. It is hard to locate the important shallow FFN neurons,
+          because they usually don't contain the information related to the final predictions directly. We analyze the important
+          shallow FFN neurons in case "3+5=" -> "8" by computing the inner product between the shallow neurons and the 
+          important deep neurons. We find that the important shallow neurons are hidden-interpretable. When directly projecting
+          these neurons in unembedding space, the top tokens are not interpretable. But if we compute these neurons' transformed
+          vectors by attention layers, these transformed neurons become interpretable in unembedding space. This phenomenon is 
+          because all the shallow neurons need to be transformed by attention layers before transferring into the last position.
+          We design a zero-shot method to locate the hidden-interpretable neurons. We compute the upper layers’ transform of each
+          neuron and project them into unembedding space. If the top tokens are related to the input number or operators, we add 
+          this shallow neuron into a neuron set. At last, we mask the shallow neurons in the neuron set and compute the accuracy 
+          decrease on all one-digit cases. The accuracy drops much. This can prove that the hidden-interpretable neurons are important.
           </p>
           <p> 
-
+          Constucting the internal logic chain of "3+5=" -> "8". First, in shallow layers there is a feature enhancing stage, 
+          the hidden-interpretable shallow FFN neurons related to the input tokens are activated. Then these enhanced features 
+          are transformed into the last position. The arithmetic head takes all these enhanced features as input and activate the
+          deep FFN neurons related to the final prediction eight. Among the deep neurons, the lower neurons activate the upper 
+          neurons during the prediction enhancing stage.
           </p>
           <p> 
-
+          Top tokens of identified FFN neurons:
+          </p>
+          <p>
+          12_4072 (transformed): [III, three, Three, 3, triple]
+          </p>
+          <p>
+          11_2258 (transformed): [XV, fifth, Fif, avas, Five, five, abase, fif]
+          </p>
+          <p>
+          28_3696: [8, eight, VIII, huit, acht, otto]
+          </p>
+          <p>
+          25_7164: [six, eight, acht, Four, twelve, six, four]
+          </p>
+          <p>
+          19_5769: [eight, VIII, 8, III, huit, acht]
           </p>
         </div>
       </div>
@@ -279,8 +349,7 @@ apply our method in model pruning for arithmetic tasks and model editing for red
     <h2 class="title">BibTeX</h2>
     <pre><code>@article{yu2024neuron,
   author    = {Yu, Zeping and Ananiadou, Sophia},
-  title     = {Interpreting Arithmetic Mechanism in Large Language Models
-through Comparative Neuron Analysis},
+  title     = {Interpreting Arithmetic Mechanism in Large Language Model through Comparative Neuron Analysis},
   journal   = {EMNLP},
   year      = {2024},
 }</code></pre>
