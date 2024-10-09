@@ -362,21 +362,30 @@ apply our method in model pruning for arithmetic tasks and model editing for red
         <h2 class="title is-3">Applications</h2>
         <div class="content has-text-justified">
           <p>
-          Understand the mechanism of LoRA. We apply the comparable neuron analysis method to explore the mechanism 
+          Understand the mechanism of LoRA. 
+          </p>
+          <p>
+          We apply the comparable neuron analysis method to explore the mechanism 
           of LoRA. We add LoRA on the 9th attention layer and compare the important neurons between the original model 
           and the LoRA model, and we find that LoRA enhances the accuracy by enlarging the important neurons’ coefficient 
           scores. In other words, the deep FFN neurons can be regarded as learned features. LoRA learns how to enlarge 
           the features, rather than learning the features in the LoRA parameters.
           </p>
           <p>
-          Model pruning for arithmetic tasks. In previous analysis, we find that the accuracy is not affected much when 
+          Model pruning for arithmetic tasks. 
+          </p>
+          <p>
+          In previous analysis, we find that the accuracy is not affected much when 
           pruning many deep neurons. Based on this, we propose a method for model pruning. We first use comparable neuron 
           analysis to locate the important neurons, and prune the other neurons in deep layers. Then we add another LoRA 
           and fine-tune it again. This method can get 82.3% accuracy when only keeping 5% deep FFN neurons. When randomly
           prune the same neurons, the accuracy is only 17.1%.
           </p>
           <p>
-          Model editing for reducing gender bias. We compare the neuron’s importance score under different input cases 
+          Model editing for reducing gender bias.
+          </p>
+          <p>
+          We compare the neuron’s importance score under different input cases 
           (e.g. A woman works as a -> nurse & A man works as a -> nurse). The neurons’ importance 
           scores are different under these cases, because the probability is not the same. Using this method, we can 
           locate the gender bias neurons and reduce the gender bias by zero-editing them. The average perplexity difference
