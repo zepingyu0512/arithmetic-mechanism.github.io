@@ -217,13 +217,13 @@
           <p>
           Arithmetic ability is a crucial foundational skill of large language models, which is related to reasoning ability.
           Previous studies (Stolfo et al., 2023) explored the layer-level information flow in arithmetic tasks. 
-          However, layer-level information flow is not enough for understanding the mechanism. Many studies have found that
+          However, <b>layer-level information flow is not enough for understanding the mechanism.</b> Many studies have found that
           the attention heads and FFN neurons are the fundamental units for storing different abilities and different knowledge.
           Furthermore, as model editing typically occurs at the neuron level, it remains unclear how to effectively leverage 
           the explanations due to the uncertainty surrounding the precise locations of important parameters.
           </p>
           <p>
-          In this study, we take attention heads and FFN neurons as fundamental units, and explore the exact parameters store
+          In this study, we take <b>attention heads and FFN neurons as fundamental units</b>, and explore the exact parameters store
           the arithmetic ability for different operations. We observe that only a minority of heads play significant roles in 
           arithmetic tasks, which we refer to as "arithmetic heads". Through experiments involving 1-digit to 3-digit 
           operations, we find critical memorization of 1-digit operations is lost when these heads are intervened.
@@ -232,19 +232,19 @@
           To explore the underlying mechanisms of this phenomenon, we propose the Comparative Neuron Analysis (CNA) method,
           which compares the change of neurons between the original model and the intervened model for the same case. 
           We construct the internal logic chain by identifying four distinct stages that span from inputs to prediction, 
-          as depicted in Figure 1. During the feature enhancing stage, hidden-interpretable features are extracted from 
-          shallow FFN neurons. Subsequently, in the feature transferring stage, shallow attention layers convert these 
-          features into directlyinterpretable features and then transfer them to the last position. In the feature 
-          predicting stage, the arithmetic heads play critical roles, activating deep FFN neurons related to the final 
-          prediction. Finally, a prediction enhancing stage exists among deep FFN neurons. Lower FFN neurons activate upper
+          as depicted in Figure 1. During the <b>feature enhancing stage</b>, <b>hidden-interpretable features</b> are extracted from 
+          shallow FFN neurons. Subsequently, in the <b>feature transferring stage</b>, shallow attention layers convert these 
+          features into directly interpretable features and then transfer them to the last position. In the <b>feature 
+          predicting stage</b>, the arithmetic heads play critical roles, activating deep FFN neurons related to the final 
+          prediction. Finally, a <b>prediction enhancing stage</b> exists among deep FFN neurons. Lower FFN neurons activate upper
           FFN neurons, while both of them enhance the probability of the final prediction.
           </p>
           <p>
           Based on this analysis, we investigate the mechanism of LoRA. Employing our CNA method to compare the original 
           model with the fine-tuned LoRA model, we note a significant increase in the coefficient scores of crucial deep 
-          FFN neurons. Hence, we conclude that LoRA enhances the final prediction by amplifying the coefficient scores of 
-          important FFN neurons. Finally, using our findings, we develop methods on model pruning for arithmetic tasks, 
-          and model editing for reducing gender bias.
+          FFN neurons. Hence, we conclude that <b>LoRA enhances the final prediction by amplifying the coefficient scores of 
+          important FFN neurons</b>. Finally, using our findings, we develop methods on <b>model pruning for arithmetic tasks</b>, 
+          and <b>model editing for reducing gender bias</b>.
           </p>
         </div>
         <div class="column is-centered has-text-centered">
@@ -273,19 +273,19 @@
           To summarize, our contributions are as follows. 
           </p> 
           <p>
-          a) We find the reason why only a few heads can influence 
+          <b>a) We find the reason why only a few heads can influence 
           arithmetic ability is that these heads store crucial parameters for memorizing 1D operations. We identify 
-          human-interpretable FFN neurons across both shallow and deep layers. 
+          human-interpretable FFN neurons across both shallow and deep layers. </b>
           </p> 
           <p>
-          b) We propose the CNA method and construct
+          <b>b) We propose the CNA method and construct
           the internal logic chain from inputs to prediction with four stages: feature enhancing, feature transferring, 
-          feature predicting, prediction enhancing. 
+          feature predicting, prediction enhancing. </b>
           </p> 
           <p>
-          c) We use the CNA method to explore the mechanism of LoRA and find 
+          <b>c) We use the CNA method to explore the mechanism of LoRA and find 
           LoRA increases the probability of final predictions by amplifying the important FFN neurons’ coefficient scores. 
-          We design a model pruning method for arithmetic tasks, and a model editing method for reducing gender bias.
+          We design a model pruning method for arithmetic tasks, and a model editing method for reducing gender bias.</b>
           </p>
         </div>
         <br/>
