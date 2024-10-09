@@ -401,14 +401,15 @@
           the features, rather than learning the features in the LoRA parameters.
           </p>
           <p>
-          b) Model pruning for arithmetic tasks. 
+          b) <b>Model pruning for arithmetic tasks.</b>
           </p>
           <p>
           In previous analysis, we find that the accuracy is not affected much when 
           pruning many deep neurons. Based on this, we propose a method for model pruning. We first use comparable neuron 
-          analysis to locate the important neurons, and prune the other neurons in deep layers. Then we add another LoRA 
-          and fine-tune it again. This method can get 82.3% accuracy when only keeping 5% deep FFN neurons. When randomly
-          prune the same neurons, the accuracy is only 17.1%.
+          analysis method to locate the important neurons by comparing the original model with the LoRA fine-tuned model, 
+          and get the pruned model by pruning the neurons in deep layers which are not important. Then we add another LoRA 
+          and fine-tune it again on the pruned model. This method can get 82.3% accuracy when pruning 95% deep FFN neurons.
+          When randomly prune the same neurons and add LoRA on this randomly-pruned model, the accuracy is only 17.1%.
           </p>
           <p>
           c) Model editing for reducing gender bias.
