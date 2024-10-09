@@ -320,13 +320,22 @@ apply our method in model pruning for arithmetic tasks and model editing for red
           neurons during the prediction enhancing stage.
           </p>
           <p> 
-          Top tokens of identified FFN neurons:
+          Top tokens of identified hidden-interpretable shallow FFN neurons:
           </p>
           <p>
-          12_4072 (transformed): [III, three, Three, 3, triple]
+          12_4072 (not transformed): [rd, quarters, PO, Constraint, ran, avas]
           </p>
           <p>
-          11_2258 (transformed): [XV, fifth, Fif, avas, Five, five, abase, fif]
+          12_4072 (attention transformed): [III, three, Three, 3, triple]
+          </p>
+          <p>
+          11_2258 (not transformed): [enz, Trace, lis, vid, suite, HT, ung, icano]
+          </p>
+          <p>
+          11_2258 (attention transformed): [XV, fifth, Fif, avas, Five, five, abase, fif]
+          </p>
+          <p> 
+          Top tokens of identified shallow FFN neurons using comparable neuron analysis (CNA):
           </p>
           <p>
           28_3696: [8, eight, VIII, huit, acht, otto]
